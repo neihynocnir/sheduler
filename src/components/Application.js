@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DayList from"components/DayList";
+import InterviewerList from 'components/InterviewList';
 import Appointment from "components/Appointment"
 import "components/Application.scss";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
-
 
 export default function Application(props) {
 
@@ -27,10 +27,27 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
       />
     );
   });
- 
+
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({
+      ...state,
+      appointments
+    });
+  
+      return axios.put(`/api/appointments/${id}`, { interview });
+  }
 
   useEffect(() => {
     Promise.all([
@@ -62,6 +79,7 @@ export default function Application(props) {
           day={state.day}
           setDay={setDay}
           appointments={state.appointments}
+          
         />
         </nav>
         <img
