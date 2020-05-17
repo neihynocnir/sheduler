@@ -28,7 +28,7 @@ const useApplicationData = () => {
     return axios.put(`/api/appointments/${id}`, { interview });
   }
 
-  function cancelInterview(id) {
+  function deleteInterview(id) {
     return axios.delete(`/api/appointments/${id}`)
     .then(() => {
       const appointment = {
@@ -63,7 +63,7 @@ const useApplicationData = () => {
         .catch(err => console.log(err));
       }, []);
       
-      return { state, setDay, bookInterview, cancelInterview }
+      return { state, setDay, bookInterview, deleteInterview }
 };
 
 export default useApplicationData;

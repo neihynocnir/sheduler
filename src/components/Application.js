@@ -11,7 +11,7 @@ export default function Application(props) {
     state,
     setDay,
     bookInterview,
-    cancelInterview
+    deleteInterview
   } = useApplicationData();
  
   const interviewers = getInterviewersForDay(state, state.day);
@@ -25,7 +25,7 @@ export default function Application(props) {
           interview={interview}
           interviewers={interviewers}
           bookInterview={bookInterview}
-          cancelInterview={cancelInterview}
+          deleteInterview={deleteInterview}
         />
       );
   });
@@ -55,7 +55,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         { schedule }
-        <Appointment key="last" time="5pm" />
+        <Appointment key="last" time="5pm"/>
       </section>
     </main>
   );

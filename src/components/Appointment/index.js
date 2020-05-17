@@ -22,7 +22,7 @@ export default function Appointment(props) {
 
 
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
-  const {bookInterview } = props;
+  const { bookInterview } = props;
 
   
   const save = function (name, interviewer) {
