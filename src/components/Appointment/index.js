@@ -38,7 +38,7 @@ export default function Appointment(props) {
           onCancel={() => back()}
           onConfirm={() => {
             transition(DELETE, true);
-            props.cancelInterview(props.id)
+            props.deleteInterview(props.id)
               .then(() => {
                 transition(EMPTY)
               })
@@ -71,7 +71,7 @@ export default function Appointment(props) {
             }        
           }
         />
-      )},
+      )}
        {mode === DELETE && (<Status message="Deleting" />)}
        {mode === SAVE && (<Status message="Saving" />)}
        {mode === EDIT && (
