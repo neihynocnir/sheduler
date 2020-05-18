@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Button from "../Button.js";
+import Button from "components/Button.js";
 import InterviewerList from 'components/InterviewList';
 import "./styles.scss";
 
@@ -12,9 +12,9 @@ export default function Form(props){
     setInterviewer(null);
   }
 
-  const cancel=()=>{
+  const cancel = () => {
     reset()
-    props.onCancel()
+    props.onCancel();
   } 
   
   return (
@@ -35,7 +35,7 @@ export default function Form(props){
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={() => cancel()}>Cancel</Button>
-          <Button confirm onClick={props.onSave}>Save</Button>
+          <Button confirm onClick={() => props.onSave(name, interviewer)}>Save</Button>
         </section>
       </section>
     </main>

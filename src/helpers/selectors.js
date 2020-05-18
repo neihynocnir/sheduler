@@ -24,3 +24,17 @@ export const getInterview = (state, interview) => {
       return interviewObj;
     }
   }
+
+  // getInterviewersForDay
+  export const getInterviewersForDay = (state, day) => {
+    const interviewers = []; 
+    const interviewerIds = state.days 
+      .filter(item => item.name === day) 
+      .map(item => item.interviewers) 
+      .reduce((total, value) => total.concat(value), []); 
+  
+    interviewerIds.forEach(id => {
+      interviewers.push(state.interviewers[id]) 
+    });
+    return interviewers;  
+  }
