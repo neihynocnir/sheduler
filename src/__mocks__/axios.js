@@ -1,63 +1,36 @@
-
 const fixtures = {
   days: [
     {
       id: 1,
       name: "Monday",
-      appointments: [3, 5],
-      interviewers: [1, 4],
+      appointments: [1, 2],
+      interviewers: [1, 2],
       spots: 1
     },
     {
       id: 2,
       name: "Tuesday",
-      appointments: [3, 5],
-      interviewers: [3, 5],
-      spots: 1
-    },
-    {
-      id: 3,
-      name: "Wednesday",
-      appointments: [3, 5],
-      interviewers: [2, 4],
-      spots: 1
-    },
-    {
-      id: 4,
-      name: "Thursday",
       appointments: [3, 4],
-      interviewers: [5, 1],
-      spots: 1
-    },
-    {
-      id: 5,
-      name: "Friday",
-      appointments: [3, 5],
-      interviewers: [4, 3],
+      interviewers: [3, 4],
       spots: 1
     }
   ],
   appointments: {
     "1": { id: 1, time: "12pm", interview: null },
-    "2": { id: 2, time: "1pm", interview: null },
+    "2": {
+      id: 2,
+      time: "1pm",
+      interview: { student: "Archie Cohen", interviewer: 2 }
+    },
     "3": {
       id: 3,
       time: "2pm",
-      interview: { student: "Archie Cohen", interviewer: 2 }
+      interview: { student: "Leopold Silvers", interviewer: 4 }
     },
-    "4": { 
-      id: 4, 
-      time: "3pm", 
-      interview: { student: "Chad Takahashi", interviewer: 3 } 
-    },
-    "5": {
-      id: 5,
-      time: "4pm",
-      interview: { student: "Felix Jaltech", interviewer: 4 }
-    }
+    "4": { id: 4, time: "3pm", interview: null }
   },
   interviewers: {
-    "1": {  
+    "1": {
       id: 1,
       name: "Sylvia Palmer",
       avatar: "https://i.imgur.com/LpaY82x.png"
@@ -69,26 +42,19 @@ const fixtures = {
     },
     "3": {
       id: 3,
-      name: "Mildred Nazir", 
-      avatar: "https://i.imgur.com/T2WwVfS.png" 
-
+      name: "Mildred Nazir",
+      avatar: "https://i.imgur.com/T2WwVfS.png"
     },
-    "4": { 
-      id: 4, 
-      name: "Cohana Roy", 
-      avatar: "https://i.imgur.com/FK8V841.jpg" 
-    },
-    "5":{
-      id: 5, 
-      name: "Sven Jones", 
-      avatar: "https://i.imgur.com/twYrpay.jpg" 
+    "4": {
+      id: 4,
+      name: "Cohana Roy",
+      avatar: "https://i.imgur.com/FK8V841.jpg"
     }
   }
 };
 
-
 export default {
-  defaults: { baseURL: "http://localhost:8001"},
+  defaults: { baseURL: "" },
   get: jest.fn(url => {
     if (url === "/api/days") {
       return Promise.resolve({
@@ -99,6 +65,7 @@ export default {
     }
 
     if (url === "/api/appointments") {
+      /* Resolve appointments data */
       return Promise.resolve({
         status: 200,
         statusText: "OK",
@@ -107,11 +74,28 @@ export default {
     }
 
     if (url === "/api/interviewers") {
+      /* Resolve interviewers data */
       return Promise.resolve({
         status: 200,
         statusText: "OK",
         data: fixtures.interviewers
       });
     }
+  }),
+  put: jest.fn(url => {
+    return Promise.resolve({
+      status: 204,
+      statusText: "No Content"
+    });
+  }),
+  delete: jest.fn(url => {
+    return Promise.resolve({
+      status: 204,
+      statusText: "No Content"
+    });
   })
-}
+};
+
+
+  
+
