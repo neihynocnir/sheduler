@@ -38,3 +38,26 @@ export const getInterview = (state, interview) => {
     });
     return interviewers;  
   }
+
+  // getSpotsForDay
+  export const getSpotsForDay = (appointments, days, day) => {
+    const selecDay = days.find(list => list.name === day);
+    const appointmentList = [...selecDay.appointments];
+    const availableSpots = appointmentList.length;
+  
+    const appointmentsSpread = { ...appointments };
+  
+    const filledSpots = Object.values(appointmentsSpread).reduce(
+      (total, appointment) => {
+        if (appointmentList.includes(appointment.id)) {
+          if (appointment.interview) {
+            return total + 1;
+          }
+        }
+        return total;
+      },
+      0
+    );
+  
+    return availableSpots - filledSpots;
+  };

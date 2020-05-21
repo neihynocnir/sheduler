@@ -2,7 +2,7 @@ import React from 'react';
 import DayList from"components/DayList";
 import Appointment from "components/Appointment"
 import "components/Application.scss";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay, getSpotsForDay } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
 
@@ -42,9 +42,10 @@ export default function Application(props) {
         <nav className="sidebar__menu">
         <DayList
           days={state.days}
-          day={state.day}
+          selectedDay={state.day}
           setDay={day => setDay(day)}
           appointments={state.appointments}
+          getSpotsForDay={getSpotsForDay}
           />
         </nav>
         <img
