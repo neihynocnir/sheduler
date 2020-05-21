@@ -1,79 +1,75 @@
-import { useState, useEffect } from 'react';
+import {useReducer, useEffect } from 'react';
 import axios from "axios";
 
-const useApplicationData = () => {
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
 
-  const [state, setState] = useState({
-    day: "Monday",
+
+
+export default function useApplicationData() {
+  const [state, dispatch] = useReducer(reducer, {
+    day: 'Monday',
     days: [],
     appointments: {},
-    interviewers:{}
+    interviewers: {}
   });
+  
+  const setDay = day => dispatch({ type: SET_DAY, day });
 
-  const setDay = day => setState({ ...state, day });
+function reducer(state, action) {
+const { appointments, day, days, id, interview, interviewers, type } = action;
+  switch (type) {
+    case SET_DAY:
+      return { ...state, day };
+      case SET_APPLICATION_DATA:
+        return { ...state, days, appointments, interviewers };
+        case SET_INTERVIEW: {
+          const appointment = {
+            ...state.appointments[id],
+            interview: interview && { ...interview }
+          };
+          const appointments = {
+            ...state.appointments,
+            [id]: appointment
+          };
+          return { ...state, appointments };
+        }
+        default:
+          throw new Error(`Tried to reduce with unsupported action type: ${type}`)}
+}
 
-  function bookInterview(id, interview) {
-    const days = state.days;
-    const sposToUpdate = days.find(theDay => theDay.name === state.day);
-    sposToUpdate.spots -= 1;
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    setState({
-      ...state,
-      days,
-      appointments
-    });
-    return axios.put(`/api/appointments/${id}`, { interview });
-  }
-
-  function deleteInterview(id) {
-    return axios.delete(`/api/appointments/${id}`)
+function bookInterview(id, interview) {
+  return axios
+    .put(`/api/appointments/${id}`, { interview })
     .then(() => {
-      const days = state.days;
-      const sposToUpdate = days.find(theDay => theDay.name === state.day);
-      sposToUpdate.spots += 1;
-      // days.map((spotsPerDay) => {if (spotsPerDay.name === state.day) { return spotsPerDay.spots += 1 }});
-      const appointment = {
-        ...state.appointments[id],
-        interview: null
-      };
-      const appointments = {
-        ...state.appointments,
-        [id]: appointment
-      };
-      setState({
-        ...state,
-        days,
-        appointments
-      });
-    })
-    .catch((err) => {
-      throw new Error(err.message)
-    })
-  }
+      dispatch({ type: SET_INTERVIEW, id, interview})
+    });
+}
 
-  useEffect(() => {
-    Promise.all([
-      Promise.resolve(
-        axios.get(`/api/days`)),
-        Promise.resolve(
-          axios.get(`/api/appointments`)),
-          Promise.resolve(axios.get(`/api/interviewers`))
-        ])
-        .then(all => {
-          setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
-        })
-        .catch(err => console.log(err));
-      }, []);
-      
-      return { state, setDay, bookInterview, deleteInterview }
-};
+function deleteInterview(id) {
+  return axios
+  .delete(`/api/appointments/${id}`)
+  .then(() => {
+    dispatch({ type: SET_INTERVIEW, id, interview: null})
+  });
+}
 
-export default useApplicationData;
+useEffect(() => {
+  const getDays = axios.get(`/api/days`);
+  const getAppointments = axios.get(`/api/appointments`);
+  const getInterviewers = axios.get(`/api/interviewers`);
+  Promise.all([getDays, getAppointments,getInterviewers])
+      .then(all => {
+        dispatch({
+          type: SET_APPLICATION_DATA,
+          days: all[0].data,
+          appointments: all[1].data,
+          interviewers: all[2].data
+        });
+      })
+      .catch(err => console.log(err));
+    }, []);
 
+  return { state, setDay, bookInterview, deleteInterview, reducer }
+}
