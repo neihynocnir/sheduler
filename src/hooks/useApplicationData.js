@@ -13,6 +13,8 @@ const useApplicationData = () => {
   const setDay = day => setState({ ...state, day });
 
   function bookInterview(id, interview) {
+    const days = state.days;
+    days.map((spotsPerDay) => { return spotsPerDay.name === state.day ? spotsPerDay.spots -= 1 : spotsPerDay.spots});
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -23,6 +25,7 @@ const useApplicationData = () => {
     };
     setState({
       ...state,
+      days,
       appointments
     });
     return axios.put(`/api/appointments/${id}`, { interview });
@@ -31,6 +34,8 @@ const useApplicationData = () => {
   function deleteInterview(id) {
     return axios.delete(`/api/appointments/${id}`)
     .then(() => {
+      const days = state.days;
+      days.map((spotsPerDay) => { return spotsPerDay.name === state.day ? spotsPerDay.spots += 1 : spotsPerDay.spots});
       const appointment = {
         ...state.appointments[id],
         interview: null
@@ -41,6 +46,7 @@ const useApplicationData = () => {
       };
       setState({
         ...state,
+        days,
         appointments
       });
     })
@@ -67,3 +73,5 @@ const useApplicationData = () => {
 };
 
 export default useApplicationData;
+
+
