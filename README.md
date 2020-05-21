@@ -5,15 +5,11 @@ Create a modern client application using  React view library was the goal of thi
 
 ## Final Product
 <p align="center">
-  <img  src="https://github.com/neihynocnir/scheduler/blob/master/docs/scheduler.png" width=40%>
+  <img  src="https://github.com/neihynocnir/scheduler/blob/master/docs/scheduler.png" width=60%>
 </p>
 <p align="center">
   <img src="https://github.com/neihynocnir/scheduler/blob/master/docs/newApp.png" width=60%>
 </p>
-<p align="center">
-  <img src="https://github.com/neihynocnir/scheduler/blob/master/docs/delApp.png" width=60%>
-</p>
-
 
 ## Dependencies
 
