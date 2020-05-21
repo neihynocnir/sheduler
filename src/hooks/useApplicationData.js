@@ -14,7 +14,8 @@ const useApplicationData = () => {
 
   function bookInterview(id, interview) {
     const days = state.days;
-    days.map((spotsPerDay) => { return spotsPerDay.name === state.day ? spotsPerDay.spots -= 1 : spotsPerDay.spots});
+    const sposToUpdate = days.find(theDay => theDay.name === state.day);
+    sposToUpdate.spots -= 1;
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -35,7 +36,9 @@ const useApplicationData = () => {
     return axios.delete(`/api/appointments/${id}`)
     .then(() => {
       const days = state.days;
-      days.map((spotsPerDay) => { return spotsPerDay.name === state.day ? spotsPerDay.spots += 1 : spotsPerDay.spots});
+      const sposToUpdate = days.find(theDay => theDay.name === state.day);
+      sposToUpdate.spots += 1;
+      // days.map((spotsPerDay) => {if (spotsPerDay.name === state.day) { return spotsPerDay.spots += 1 }});
       const appointment = {
         ...state.appointments[id],
         interview: null
@@ -73,5 +76,4 @@ const useApplicationData = () => {
 };
 
 export default useApplicationData;
-
 
